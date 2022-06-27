@@ -4,6 +4,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialAppModule} from './material.module';
 import { CreateTaskDialogComponent } from './create-task-dialog/create-task-dialog.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { CreateTaskDialogComponent } from './create-task-dialog/create-task-dial
     BrowserModule,
     BrowserAnimationsModule,
     MaterialAppModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
