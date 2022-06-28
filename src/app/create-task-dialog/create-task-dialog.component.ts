@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
 import {Category} from '../Models/categories-model';
-import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {Constants} from '../resources/Constants';
 import {TasksService} from '../services/tasks.service';
 import {Todo} from '../Models/todo-model';
@@ -27,6 +27,7 @@ export class CreateTaskDialogComponent implements OnInit {
     constructor(
         @Inject(MAT_DIALOG_DATA) readonly data: { categories: Category[] },
         private tasksService: TasksService,
+        private dialogRef: MatDialogRef<CreateTaskDialogComponent>
     ) {
         this.categories = [];
     }
@@ -50,11 +51,15 @@ export class CreateTaskDialogComponent implements OnInit {
             this.tasksService.createTodo(todo).subscribe(
                 (response) => console.log(response),
                 (error: any) => console.log(error),
-                () => console.log("done"),
+                () => this.closeDialog(true),
             );
         } else {
             throw new SyntaxError('Имя задачи не заполнено.');
         }
+    }
+
+    closeDialog(isNeedRefresh: boolean){
+        this.dialogRef.close(isNeedRefresh)
     }
 }
 

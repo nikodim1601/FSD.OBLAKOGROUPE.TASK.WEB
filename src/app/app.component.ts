@@ -25,8 +25,10 @@ export class AppComponent {
             }
         });
 
-        dialogRef.afterClosed().subscribe(result => {
-            console.log(`Dialog result: ${result}`);
+        dialogRef.afterClosed().subscribe(isNeedRefresh => {
+            if (isNeedRefresh){
+                this.onGetProjects();
+            }
         });
 
     }

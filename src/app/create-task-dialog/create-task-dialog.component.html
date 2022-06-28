@@ -37,10 +37,9 @@
 </div>
 <div mat-dialog-actions>
   <button mat-button
-          mat-dialog-close>ОТМЕНА
+          (click)="closeDialog(false)">ОТМЕНА
   </button>
   <button mat-button
-          mat-dialog-close
           cdkFocusInitial
           (click)="onCreateTodo()">ОК
   </button>
