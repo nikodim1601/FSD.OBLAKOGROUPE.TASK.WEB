@@ -13,17 +13,16 @@ import {Todo} from '../Models/todo-model';
     providedIn: 'root'
 })
 export class TasksService {
+    /**
+     * API url.
+     */
+    private apiUrl = environment.apiUrl;
 
     /**
      * @param http HttpClient.
      */
     constructor(private http: HttpClient) {
     }
-
-    /**
-     * API url.
-     */
-    private apiUrl = environment.apiUrl;
 
     /**
      * Получает список проектов.

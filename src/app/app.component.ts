@@ -6,72 +6,97 @@ import {Project} from './Models/project-model';
 import {Todo} from './Models/todo-model';
 import {Category} from './Models/categories-model';
 import {Constants} from './resources/Constants';
+import {Subscription} from 'rxjs';
 
+/**
+ * Пердставляет компоннет со списком проектов.
+ */
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+    /**
+     * Возвращает список проектов
+     */
+    public projects: Project[];
 
+    /**
+     * Возвращает список категорий
+     */
+    private categories: Category[];
+
+    /**
+     * @param dialog MatDialog.
+     * @param tasksService сервис для работы с задачами.
+     */
     constructor(private dialog: MatDialog, private tasksService: TasksService) {
-        this.categories = []
+        this.categories = [];
+        this.projects = [];
     }
 
-    openDialog() {
+    /**
+     * Открывает диалог создания задачи.
+     */
+    async openDialogAsync() {
         const dialogRef = this.dialog.open(CreateTaskDialogComponent, {
             data: {
                 categories: this.categories
             }
         });
-
-        dialogRef.afterClosed().subscribe(isNeedRefresh => {
-            if (isNeedRefresh){
-                this.onGetProjects();
-            }
-        });
+        let sub: Subscription = dialogRef.afterClosed().subscribe(async isNeedRefresh => {
+                if (isNeedRefresh) {
+                    await this.onGetProjects();
+                }
+            },
+            error => console.log(error),
+            () => sub.unsubscribe()
+        );
 
     }
-
-    private categories: Category[]
-
-    private createCategories(){
-        this.categories = []
-        this.projects?.forEach(value => {
-            this.categories.push(new Category(value.id, value.title))
-        })
-        this.categories.push(new Category(undefined, Constants.NEW_CATEGORY))
-    }
-
-    public projects: Project[] | undefined
 
     /**
      * Получает список проектов.
      */
-    onGetProjects() {
-        this.tasksService.getProjects().subscribe(
+    async onGetProjects() {
+        let sub: Subscription = this.tasksService.getProjects().subscribe(
             (response) => {
-                this.projects = response
-                this.createCategories();
+                this.projects = response;
+                this.CreateCategories();
             },
-            (error: any) => console.log(error),
-            () => console.log("got tasks"),
+            (error) => console.log(error),
+            () => sub.unsubscribe()
         );
     }
 
-    ngOnInit(){
-        this.onGetProjects()
+    /**
+     * Срабатывает при инициализации компонента.
+     */
+    async ngOnInit() {
+        await this.onGetProjects();
     }
 
-    public UpdateTodo(todo: Todo){
-        todo.isCompleted = !todo.isCompleted
-        this.tasksService.updateTodo(todo).subscribe(
+    /**
+     * Обновляет список задач.
+     */
+    public async onUpdateTodo(todo: Todo) {
+        todo.isCompleted = !todo.isCompleted;
+        let sub: Subscription = this.tasksService.updateTodo(todo).subscribe(
             (response) => {
-                console.log(response)
+                console.log(response);
             },
-            (error: any) => console.log(error),
-            () => console.log("chged todo"),
+            (error) => console.log(error),
+            () => sub.unsubscribe()
         );
+    }
+
+    private CreateCategories() {
+        this.categories = [];
+        this.categories.push(new Category(undefined, Constants.NEW_CATEGORY));
+        this.projects.forEach(value => {
+            this.categories.push(new Category(value.id, value.title));
+        });
     }
 
 }

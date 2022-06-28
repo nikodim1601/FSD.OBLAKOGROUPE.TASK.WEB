@@ -6,7 +6,7 @@
       <input matInput
              placeholder="Не больше 100 символов"
              formControlName="todoFromControl"
-             (input)="onControlChange()"
+             (input)="checkIsFormValid()"
              required>
       <mat-error *ngIf="controls.todoFromControl.invalid">{{GetErrorMessage(controls.todoFromControl)}}</mat-error>
     </mat-form-field>
@@ -14,9 +14,9 @@
     <mat-form-field appearance="fill">
       <mat-label>Категория</mat-label>
       <mat-select formControlName="categoryFromControl"
-                  (selectionChange)="onControlChange()">
+                  (selectionChange)="checkIsFormValid()">
         <mat-option *ngFor="let category of categories"
-                    (change)="onControlChange()"
+                    (change)="checkIsFormValid()"
                     [value]="category.name">
           {{category.name}}
         </mat-option>
@@ -31,7 +31,7 @@
           <input matInput
                  placeholder="Не больше 300 символов"
                  formControlName="projectFormControl"
-                 (input)="onControlChange()"
+                 (input)="checkIsFormValid()"
                  required>
           <mat-error *ngIf="controls.categoryFromControl.valid">{{GetErrorMessage(controls.projectFormControl)}}</mat-error>
         </mat-form-field>
@@ -45,6 +45,6 @@
   </button>
   <button mat-button
           [disabled]="isValidForm"
-          (click)="CreateTodo()">ОК
+          (click)="onCreateTodo()">ОК
   </button>
 </div>

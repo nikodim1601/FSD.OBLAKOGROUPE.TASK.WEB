@@ -1,6 +1,6 @@
 <mat-toolbar>
   <span>My Application</span>
-  <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" (click)="openDialog()">
+  <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" (click)="openDialogAsync()">
     <mat-icon>add</mat-icon>
   </button>
 </mat-toolbar>
@@ -14,7 +14,7 @@
         </mat-card-title>
         <mat-divider></mat-divider>
         <ng-container *ngFor="let todo of project.todos">
-          <mat-checkbox checked="{{todo.isCompleted}}" (change)="UpdateTodo(todo)" class="example-margin">{{todo.text}}</mat-checkbox>
+          <mat-checkbox checked="{{todo.isCompleted}}" (change)="onUpdateTodo(todo)" class="example-margin">{{todo.text}}</mat-checkbox>
         </ng-container>
       </mat-card>
     </mat-grid-tile>

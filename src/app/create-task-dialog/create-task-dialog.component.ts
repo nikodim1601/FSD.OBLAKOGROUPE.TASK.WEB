@@ -5,6 +5,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {Constants} from '../resources/Constants';
 import {TasksService} from '../services/tasks.service';
 import {Todo} from '../Models/todo-model';
+import {plainToClass} from 'class-transformer';
 
 /**
  * Представляет компонент создания задачи.
@@ -40,9 +41,14 @@ export class CreateTaskDialogComponent implements OnInit {
     isValidForm: boolean = true;
 
     /**
+     * Возвращает или устанавливает категории.
+     */
+    categories: Category[];
+
+    /**
      * Проверяет является ли форма валидной.
      */
-    onControlChange() {
+    checkIsFormValid() {
         if (this.controls.todoFromControl.valid && this.controls.categoryFromControl.valid) {
             if (this.controls.categoryFromControl.value == Constants.NEW_CATEGORY) {
                 this.isValidForm = !this.controls.projectFormControl.valid;
@@ -53,12 +59,6 @@ export class CreateTaskDialogComponent implements OnInit {
             this.isValidForm = true;
         }
     }
-
-    /**
-     * Возвращает или устанавливает категории.
-     */
-    categories: Category[];
-
 
     /**
      * @param formBuild fromBuilder.
@@ -97,7 +97,7 @@ export class CreateTaskDialogComponent implements OnInit {
     /**
      * Создает задачу.
      */
-    CreateTodo() {
+    async onCreateTodo() {
         let categoryFromControl = this.controls.categoryFromControl;
 
         if (this.controls.todoFromControl.value) {
@@ -108,30 +108,17 @@ export class CreateTaskDialogComponent implements OnInit {
             } else {
                 todo = this.getTodoWithProjectId();
             }
-            this.tasksService.createTodo(todo).subscribe(
+            let sub = this.tasksService.createTodo(plainToClass(Todo, todo)).subscribe(
                 (response) => console.log(response),
                 (error: any) => console.log(error),
-                () => this.closeDialog(true),
+                () => {
+                    this.closeDialog(true);
+                    sub.unsubscribe();
+                },
             );
         } else {
             throw new SyntaxError('Имя задачи не заполнено.');
         }
-    }
-
-    private getTodoWithProjectId(): Todo {
-        return new Todo(undefined,
-            this.controls.todoFromControl.value!,
-            false,
-            this.categories.find(value => value.name == this.controls.categoryFromControl.value)?.id,
-            undefined);
-    }
-
-    private getTodoWithProjectName(): Todo {
-        return new Todo(undefined,
-            this.controls.todoFromControl.value!,
-            false,
-            undefined,
-            this.controls.projectFormControl.value);
     }
 
     /**
@@ -140,5 +127,22 @@ export class CreateTaskDialogComponent implements OnInit {
     closeDialog(isNeedRefresh: boolean) {
         this.dialogRef.close(isNeedRefresh);
     }
+
+    private getTodoWithProjectId() {
+        return {
+            text: this.controls.todoFromControl.value,
+            isCompleted: false,
+            project_id: this.categories.find(value => value.name == this.controls.categoryFromControl.value)?.id
+        }
+    }
+
+    private getTodoWithProjectName() {
+        return  {
+            title: this.controls.todoFromControl.value,
+            isCompleted: false,
+            text: this.controls.projectFormControl.value
+        }
+    }
+
 }
 
