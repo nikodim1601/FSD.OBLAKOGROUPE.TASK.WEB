@@ -1,38 +1,44 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject, Input, OnInit} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
+import {Category} from '../Models/categories-model';
+import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {Constants} from '../resources/Constants';
 
 
 @Component({
-  selector: 'app-create-task-dialog',
-  templateUrl: './create-task-dialog.component.html',
-  styleUrls: ['./create-task-dialog.component.scss']
+    selector: 'app-create-task-dialog',
+    templateUrl: './create-task-dialog.component.html',
+    styleUrls: ['./create-task-dialog.component.scss']
 })
 export class CreateTaskDialogComponent implements OnInit {
-  email = new FormControl('', [Validators.required, Validators.email]);
+    newCategoryName = Constants.NEW_CATEGORY;
+    todoFromControl = new FormControl('', [Validators.required, Validators.maxLength(3)]);
+    projectFormControl = new FormControl('', [Validators.required]);
+    categoryFromControl = new FormControl('', [Validators.required, Validators.maxLength(100)]);
 
-  foods: Food[] = [
-    {value: 'steak-0', viewValue: 'Steak'},
-    {value: 'pizza-1', viewValue: 'Pizza'},
-    {value: 'tacos-2', viewValue: 'Tacos'},
-  ];
+    /**
+     * Возвращает или устанавливает категории.
+     */
+    @Input()
+    categories: Category[] | undefined;
 
-  title = "is it dialog title."
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-  getErrorMessage() {
-    if (this.email.hasError('required')) {
-      return 'You must enter a value';
+    constructor(
+        @Inject(MAT_DIALOG_DATA) readonly data: { categories: Category[] },
+    ) {
     }
 
-    return this.email.hasError('email') ? 'Not a valid email' : '';
-  }
+    ngOnInit(): void {
+        // this.categoriesFromControl =
+        this.categories = this.data.categories;
+    }
 
+    GetErrorMessage(formControl: FormControl): string | void {
+        if(formControl.hasError('required')){
+            return 'Поле обязательно для заполнения'
+        }
+        if(formControl.hasError('maxlength')){
+            return 'Название слишком длинное'
+        }
+    }
 }
 
-interface Food {
-  value: string;
-  viewValue: string;
-}

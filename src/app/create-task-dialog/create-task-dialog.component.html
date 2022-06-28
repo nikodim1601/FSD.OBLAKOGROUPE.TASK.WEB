@@ -1,25 +1,32 @@
-<h1 mat-dialog-title>title</h1>
+<h1 mat-dialog-title>Новая задача</h1>
 <div mat-dialog-content>
-    <div class="example-container">
+  <div>
     <mat-form-field appearance="fill">
-      <mat-label>Enter your email</mat-label>
-      <input matInput placeholder="pat@example.com" [formControl]="email" required>
-      <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+      <mat-label>Ведите название задачи</mat-label>
+      <input matInput placeholder="Не больше 100 символов" [formControl]="todoFromControl" required>
+      <mat-error *ngIf="todoFromControl.invalid">{{GetErrorMessage(todoFromControl)}}</mat-error>
     </mat-form-field>
   </div>
-  <mat-form-field appearance="fill">
-    <mat-label>Input</mat-label>
-    <input matInput>
-  </mat-form-field>
-  <br>
-  <mat-form-field appearance="fill">
-    <mat-label>Favorite food</mat-label>
-    <mat-select>
-      <mat-option *ngFor="let food of foods" [value]="food.value">
-        {{food.viewValue}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+  <div>
+    <mat-form-field appearance="fill">
+      <mat-label>Категория</mat-label>
+      <mat-select [formControl]="categoryFromControl">
+        <mat-option *ngFor="let category of categories" [value]="category.name">
+          {{category.name}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="categoryFromControl.invalid">{{GetErrorMessage(categoryFromControl)}}</mat-error>
+    </mat-form-field>
+  </div>
+  <ng-container *ngIf="categoryFromControl.value === newCategoryName">
+    <div>
+      <mat-form-field appearance="fill">
+        <mat-label>Ведите название проекта</mat-label>
+        <input matInput placeholder="Не больше 300 символов" [formControl]="projectFormControl" required>
+        <mat-error *ngIf="projectFormControl.invalid">{{GetErrorMessage(projectFormControl)}}</mat-error>
+      </mat-form-field>
+    </div>
+  </ng-container>
 </div>
 <div mat-dialog-actions>
   <button mat-button mat-dialog-close>No</button>

@@ -6,35 +6,17 @@
 </mat-toolbar>
 
 <mat-grid-list cols="3" rowHeight="2:1">
-  <mat-grid-tile>
-    <mat-card>
-      <mat-card-title>
-        Title
-      </mat-card-title>
-      <mat-divider></mat-divider>
-<!--      <mat-checkbox class="example-margin" [(ngModel)]="checked">Checked</mat-checkbox>-->
-      <mat-checkbox class="example-margin">11</mat-checkbox>
-      <mat-checkbox class="example-margin">12</mat-checkbox>
-      <p>outside</p>
-    </mat-card>
-  </mat-grid-tile>
-  <mat-grid-tile>
-    <mat-card>
-      <mat-card-title>
-        Title 2
-      </mat-card-title>
-      <mat-divider></mat-divider>
-      <mat-checkbox class="example-margin">11</mat-checkbox>
-      <mat-checkbox class="example-margin">12</mat-checkbox>
-      <p>outside</p>
-    </mat-card>
-  </mat-grid-tile>
-  <mat-grid-tile>3</mat-grid-tile>
-  <mat-grid-tile>4</mat-grid-tile>
-  <mat-grid-tile>5</mat-grid-tile>
-  <mat-grid-tile>6</mat-grid-tile>
-  <mat-grid-tile>7</mat-grid-tile>
-  <mat-grid-tile>8</mat-grid-tile>
-  <mat-grid-tile>9</mat-grid-tile>
-  <mat-grid-tile>10</mat-grid-tile>
+  <ng-container *ngFor="let project of projects">
+    <mat-grid-tile>
+      <mat-card>
+        <mat-card-title>
+          {{project.title}}
+        </mat-card-title>
+        <mat-divider></mat-divider>
+        <ng-container *ngFor="let todo of project.todos">
+          <mat-checkbox checked="{{todo.isCompleted}}" class="example-margin">{{todo.text}}</mat-checkbox>
+        </ng-container>
+      </mat-card>
+    </mat-grid-tile>
+  </ng-container>
 </mat-grid-list>
