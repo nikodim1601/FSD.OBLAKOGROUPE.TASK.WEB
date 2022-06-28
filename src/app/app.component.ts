@@ -61,13 +61,13 @@ export class AppComponent {
 
     ngOnInit(){
         this.onGetProjects()
-        // this.onCreateTodo()
     }
 
-    public onUpdateTodo(todo: Todo){
+    public UpdateTodo(todo: Todo){
         todo.isCompleted = !todo.isCompleted
         this.tasksService.updateTodo(todo).subscribe(
             (response) => {
+                console.log(response)
             },
             (error: any) => console.log(error),
             () => console.log("chged todo"),

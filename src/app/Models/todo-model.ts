@@ -1,12 +1,9 @@
-import {FormControl} from '@angular/forms';
-
-
 export class Todo {
     constructor(
-        id: number | undefined | null,
+        id: number | undefined,
         text: string,
         isCompleted: boolean,
-        project_id: number | undefined | null,
+        project_id: number | undefined,
         title: string | undefined | null,
     ) {
         this.id = id;
@@ -16,9 +13,9 @@ export class Todo {
         this.title = title;
     }
 
-    id: number | undefined | null;
+    id: number | undefined;
     text: string;
     isCompleted: boolean;
-    project_id?: number | undefined | null;
+    project_id?: number | undefined;
     title?: string | undefined | null;
 }
