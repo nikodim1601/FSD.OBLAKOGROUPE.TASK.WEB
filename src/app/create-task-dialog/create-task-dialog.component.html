@@ -6,15 +6,17 @@
       <input matInput
              placeholder="Не больше 100 символов"
              [formControl]="todoFromControl"
+             (input)="onControlChange()"
              required>
       <mat-error *ngIf="todoFromControl.invalid">{{GetErrorMessage(todoFromControl)}}</mat-error>
     </mat-form-field>
   </div>
   <div>
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill" >
       <mat-label>Категория</mat-label>
-      <mat-select [formControl]="categoryFromControl">
+      <mat-select [formControl]="categoryFromControl" (selectionChange)="onControlChange()">
         <mat-option *ngFor="let category of categories"
+                    (change)="onControlChange()"
                     [value]="category.name">
           {{category.name}}
         </mat-option>
@@ -29,6 +31,7 @@
         <input matInput
                placeholder="Не больше 300 символов"
                [formControl]="projectFormControl"
+               (input)="onControlChange()"
                required>
         <mat-error *ngIf="projectFormControl.invalid">{{GetErrorMessage(projectFormControl)}}</mat-error>
       </mat-form-field>
@@ -40,7 +43,7 @@
           (click)="closeDialog(false)">ОТМЕНА
   </button>
   <button mat-button
-          cdkFocusInitial
+          [disabled]="isValidForm"
           (click)="onCreateTodo()">ОК
   </button>
 </div>

@@ -33,7 +33,6 @@ export class TasksService {
     };
 
     getProjects(): Observable<Project[]> {
-        // return this.http.get<Project[]>(`${this.apiUrl}/projects`);
         return this.http.get<Project[]>(`${this.apiUrl}/projects`).pipe(
             map(result => {
                 let proj = plainToClass(Project, result);
