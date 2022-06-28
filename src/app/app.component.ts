@@ -62,8 +62,14 @@ export class AppComponent {
         // this.onCreateTodo()
     }
 
-    public onUpdateTodo(){
-
+    public onUpdateTodo(todo: Todo){
+        todo.isCompleted = !todo.isCompleted
+        this.tasksService.updateTodo(todo).subscribe(
+            (response) => {
+            },
+            (error: any) => console.log(error),
+            () => console.log("chged todo"),
+        );
     }
 
 }
