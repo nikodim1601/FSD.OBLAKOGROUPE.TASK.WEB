@@ -26,17 +26,10 @@ export class TasksService {
      */
     private apiUrl = environment.apiUrl;
 
-    httpOptions = {
-        headers: new HttpHeaders({
-            'Content-Type': 'application/json'
-        })
-    };
-
     getProjects(): Observable<Project[]> {
         return this.http.get<Project[]>(`${this.apiUrl}/projects`).pipe(
             map(result => {
                 let proj = plainToClass(Project, result);
-                // console.log(proj)
                 return proj;
             })
         );

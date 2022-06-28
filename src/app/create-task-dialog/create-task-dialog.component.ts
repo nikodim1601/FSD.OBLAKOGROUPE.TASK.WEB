@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, Validators} from '@angular/forms';
 import {Category} from '../Models/categories-model';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {Constants} from '../resources/Constants';
@@ -20,25 +20,32 @@ export class CreateTaskDialogComponent implements OnInit {
      */
     readonly newCategoryName = Constants.NEW_CATEGORY;
 
+    /**
+     * Возвращает группу formControl'ов.
+     */
     readonly createFromGroup = this.formBuild.group({
-        todoFromControl: null,
-        categoryFromControl: null,
-        projectFormControl: null,
+        todoFromControl: ['', [Validators.required, Validators.maxLength(300)]],
+        categoryFromControl: ['', [Validators.required]],
+        projectFormControl: ['', [Validators.required, Validators.maxLength(100)]],
     });
 
     /**
-     * Возвращает formControl имени задачи.
+     * Возвращает formControl'ы.
      */
-    readonly todoFromControl = new FormControl('', [Validators.required, Validators.maxLength(300)]);
-    categoryFromControl = new FormControl('', [Validators.required]);
-    projectFormControl = new FormControl('', [Validators.required, Validators.maxLength(100)]);
+    readonly controls = this.createFromGroup.controls;
 
+    /**
+     * Является ли форма валидной.
+     */
     isValidForm: boolean = true;
 
+    /**
+     * Проверяет является ли форма валидной.
+     */
     onControlChange() {
-        if (this.todoFromControl.valid && this.categoryFromControl.valid) {
-            if (this.categoryFromControl.value == Constants.NEW_CATEGORY) {
-                this.isValidForm = !this.projectFormControl.valid;
+        if (this.controls.todoFromControl.valid && this.controls.categoryFromControl.valid) {
+            if (this.controls.categoryFromControl.value == Constants.NEW_CATEGORY) {
+                this.isValidForm = !this.controls.projectFormControl.valid;
             } else {
                 this.isValidForm = false;
             }
@@ -52,6 +59,13 @@ export class CreateTaskDialogComponent implements OnInit {
      */
     categories: Category[];
 
+
+    /**
+     * @param formBuild fromBuilder.
+     * @param data содержит переданный в компонент контекст.
+     * @param tasksService сервис для работы с задачами.
+     * @param dialogRef MatDialogRef.
+     */
     constructor(
         private formBuild: FormBuilder,
         @Inject(MAT_DIALOG_DATA) readonly data: { categories: Category[] },
@@ -61,10 +75,16 @@ export class CreateTaskDialogComponent implements OnInit {
         this.categories = [];
     }
 
+    /**
+     * Срабатывает при инициализации компонента.
+     */
     ngOnInit(): void {
         this.categories = this.data.categories;
     }
 
+    /**
+     * Возвращает ошибку.
+     */
     GetErrorMessage(formControl: FormControl): string | void {
         if (formControl.hasError('required')) {
             return 'Поле обязательно для заполнения';
@@ -74,11 +94,16 @@ export class CreateTaskDialogComponent implements OnInit {
         }
     }
 
-    onCreateTodo() {
-        if (this.todoFromControl.value) {
+    /**
+     * Создает задачу.
+     */
+    CreateTodo() {
+        let categoryFromControl = this.controls.categoryFromControl;
+
+        if (this.controls.todoFromControl.value) {
             let todo;
-            if (this.categoryFromControl.value != Constants.NEW_CATEGORY) {
-                this.categoryFromControl.setValue(null);
+            if (categoryFromControl.value == Constants.NEW_CATEGORY) {
+                categoryFromControl.setValue(null);
                 todo = this.getTodoWithProjectName();
             } else {
                 todo = this.getTodoWithProjectId();
@@ -93,22 +118,25 @@ export class CreateTaskDialogComponent implements OnInit {
         }
     }
 
-    getTodoWithProjectId(): Todo {
-        return new Todo(null,
-            this.todoFromControl.value!,
+    private getTodoWithProjectId(): Todo {
+        return new Todo(undefined,
+            this.controls.todoFromControl.value!,
             false,
-            this.categories.find(value => value.name == this.categoryFromControl.value)?.id,
-            null);
+            this.categories.find(value => value.name == this.controls.categoryFromControl.value)?.id,
+            undefined);
     }
 
-    getTodoWithProjectName(): Todo {
-        return new Todo(null,
-            this.todoFromControl.value!,
+    private getTodoWithProjectName(): Todo {
+        return new Todo(undefined,
+            this.controls.todoFromControl.value!,
             false,
-            null,
-            this.projectFormControl.value);
+            undefined,
+            this.controls.projectFormControl.value);
     }
 
+    /**
+     * Закрывает диалог.
+     */
     closeDialog(isNeedRefresh: boolean) {
         this.dialogRef.close(isNeedRefresh);
     }
