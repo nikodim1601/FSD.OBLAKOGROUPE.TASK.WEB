@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {map, Observable} from 'rxjs';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {catchError, map, Observable, throwError} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {plainToClass} from 'class-transformer';
 import {Project} from '../Models/project-model';
@@ -26,6 +26,12 @@ export class TasksService {
    */
   private apiUrl = environment.apiUrl;
 
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type':  'application/json'
+    })
+  };
+
   getProjects(): Observable<Project[]>{
     // return this.http.get<Project[]>(`${this.apiUrl}/projects`);
     return this.http.get<Project[]>(`${this.apiUrl}/projects`).pipe(
@@ -38,7 +44,11 @@ export class TasksService {
   }
 
   createTodo(task: Todo): Observable<Todo>{
-    return this.http.post<Todo>(`${this.apiUrl}/todos`, task);
+    let result = this.http.post<Todo>(`${this.apiUrl}/todos/`, task)
+    return result;
   }
+
+
+
 
 }

@@ -59,19 +59,11 @@ export class AppComponent {
 
     ngOnInit(){
         this.onGetProjects()
+        // this.onCreateTodo()
     }
 
-    private todo: Todo = {
-        isCompleted: false,
-        project_id: 5,
-        text: 'FromAngular'
-    };
+    public onUpdateTodo(){
 
-    onCreateTodo(){
-        this.tasksService.createTodo(this.todo).subscribe(
-            (response) => console.log(response),
-            (error: any) => console.log(error),
-            () => console.log("done"),
-        );
     }
+
 }
