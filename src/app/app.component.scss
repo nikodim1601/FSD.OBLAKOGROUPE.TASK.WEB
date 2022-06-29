@@ -1,3 +1,9 @@
+// Body
+.container{
+  height: 100vh;
+  background: #F3F0F0;
+}
+
 // Toolbar
 .spacer {
   flex: 1 1 auto;
@@ -17,15 +23,3 @@
   flex-direction: column;
 }
 
-// Grid
-
-.grid{
-  background: #F3F0F0;
-}
-
-// Checkbox
-
-.checkbox{
-  color: black;
-  border-color: black;
-}
