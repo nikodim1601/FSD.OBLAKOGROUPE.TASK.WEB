@@ -30,7 +30,7 @@ export class TasksService {
     getProjects(): Observable<Project[]> {
         return this.http.get<Project[]>(`${this.apiUrl}/projects`).pipe(
             retry(1),
-            catchError(this.handleError),
+            catchError(TasksService.handleError),
             tap(result => {
                 return plainToClass(Project, result);
             }),
@@ -49,21 +49,21 @@ export class TasksService {
      * Обновляет статус задачи.
      */
     updateTodo(task: Todo): Observable<Todo> {
-        let result = this.http.patch<Todo>(`${this.apiUrl}/projsects/${task.project_id}/todos/${task.id}`, task);
+        let result = this.http.patch<Todo>(`${this.apiUrl}/projects/${task.project_id}/todos/${task.id}`, task);
         return this.handleResult(result);
     }
 
     private handleResult(result: Observable<Todo>): Observable<Todo> {
         return result.pipe(
             retry(1),
-            catchError(this.handleError),
+            catchError(TasksService.handleError),
             tap(value => {
-                return plainToClass(Todo, result);
+                return plainToClass(Todo, value);
             })
         );
     }
 
-    private handleError(error: HttpErrorResponse): Observable<never> {
+    private static handleError(error: HttpErrorResponse): Observable<never> {
         if (error.status == 404) {
             return throwError('Error 404, resource not found.');
         }

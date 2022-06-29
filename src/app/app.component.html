@@ -1,21 +1,25 @@
-<mat-toolbar>
-  <span>My Application</span>
-  <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" (click)="openDialogAsync()">
+<mat-toolbar color="primary">
+  <span class="spacer"></span>
+  <span>Задачи</span>
+  <span class="spacer"></span>
+  <button mat-icon-button (click)="openDialogAsync()">
     <mat-icon>add</mat-icon>
   </button>
 </mat-toolbar>
 
-<mat-grid-list cols="3" rowHeight="2:1">
+<mat-grid-list cols="3" rowHeight="2:1" class="grid">
   <ng-container *ngFor="let project of projects">
     <mat-grid-tile>
-      <mat-card>
-        <mat-card-title>
+      <mat-card class="card-container">
+        <mat-card-title class="card-title">
           {{project.title}}
         </mat-card-title>
         <mat-divider></mat-divider>
-        <ng-container *ngFor="let todo of project.todos">
-          <mat-checkbox checked="{{todo.isCompleted}}" (change)="onUpdateTodo(todo)" class="example-margin">{{todo.text}}</mat-checkbox>
-        </ng-container>
+        <div class="card-body-container">
+          <ng-container *ngFor="let todo of project.todos">
+            <mat-checkbox color="primary" checked="{{todo.isCompleted}}" (change)="onUpdateTodo(todo)" class="checkbox">{{todo.text}}</mat-checkbox>
+          </ng-container>
+        </div>
       </mat-card>
     </mat-grid-tile>
   </ng-container>

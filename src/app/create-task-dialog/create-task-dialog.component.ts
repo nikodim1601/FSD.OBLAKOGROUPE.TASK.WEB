@@ -138,9 +138,9 @@ export class CreateTaskDialogComponent implements OnInit {
 
     private getTodoWithProjectName() {
         return  {
-            title: this.controls.todoFromControl.value,
+            title: this.controls.projectFormControl.value,
             isCompleted: false,
-            text: this.controls.projectFormControl.value
+            text: this.controls.todoFromControl.value
         }
     }
 

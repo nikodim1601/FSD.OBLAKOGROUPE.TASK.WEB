@@ -1,0 +1,31 @@
+// Toolbar
+.spacer {
+  flex: 1 1 auto;
+}
+
+// Card
+
+.card-container{
+  width: 90%;
+  background: white;
+  color: black;
+}
+
+.card-body-container{
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+// Grid
+
+.grid{
+  background: #F3F0F0;
+}
+
+// Checkbox
+
+.checkbox{
+  color: black;
+  border-color: black;
+}

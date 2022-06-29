@@ -83,9 +83,7 @@ export class AppComponent {
     public async onUpdateTodo(todo: Todo) {
         todo.isCompleted = !todo.isCompleted;
         let sub: Subscription = this.tasksService.updateTodo(todo).subscribe(
-            (response) => {
-                console.log(response);
-            },
+            () => {},
             (error) => console.log(error),
             () => sub.unsubscribe()
         );

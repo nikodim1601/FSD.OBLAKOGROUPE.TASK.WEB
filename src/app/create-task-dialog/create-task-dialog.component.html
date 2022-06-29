@@ -40,10 +40,10 @@
   </form>
 </div>
 <div mat-dialog-actions>
-  <button mat-button
+  <button mat-flat-button  color="accent"
           (click)="closeDialog(false)">ОТМЕНА
   </button>
-  <button mat-button
+  <button mat-flat-button color="primary"
           [disabled]="isValidForm"
           (click)="onCreateTodo()">ОК
   </button>
