@@ -19,7 +19,7 @@ export class CreateTaskDialogComponent implements OnInit {
     /**
      * Возвращает категорию создания проекта.
      */
-    readonly newCategoryName = Constants.NEW_CATEGORY;
+    readonly newProjectName = Constants.NEW_PROJECT;
 
     /**
      * Возвращает группу formControl'ов.
@@ -50,7 +50,7 @@ export class CreateTaskDialogComponent implements OnInit {
      */
     checkIsFormValid() {
         if (this.controls.todoFromControl.valid && this.controls.categoryFromControl.valid) {
-            if (this.controls.categoryFromControl.value == Constants.NEW_CATEGORY) {
+            if (this.controls.categoryFromControl.value == Constants.NEW_PROJECT) {
                 this.isValidForm = !this.controls.projectFormControl.valid;
             } else {
                 this.isValidForm = false;
@@ -102,7 +102,7 @@ export class CreateTaskDialogComponent implements OnInit {
 
         if (this.controls.todoFromControl.value) {
             let todo;
-            if (categoryFromControl.value == Constants.NEW_CATEGORY) {
+            if (categoryFromControl.value == Constants.NEW_PROJECT) {
                 categoryFromControl.setValue(null);
                 todo = this.getTodoWithProjectName();
             } else {

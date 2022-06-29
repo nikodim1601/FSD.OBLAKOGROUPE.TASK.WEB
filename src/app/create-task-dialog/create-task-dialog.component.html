@@ -12,7 +12,7 @@
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">
-      <mat-label>Категория</mat-label>
+      <mat-label>Проект</mat-label>
       <mat-select formControlName="categoryFromControl"
                   (selectionChange)="checkIsFormValid()">
         <mat-option *ngFor="let category of categories"
@@ -24,7 +24,7 @@
       <mat-error *ngIf="controls.categoryFromControl.invalid">{{GetErrorMessage(controls.categoryFromControl)}}</mat-error>
     </mat-form-field>
     <br>
-    <ng-container *ngIf="controls.categoryFromControl.value === newCategoryName">
+    <ng-container *ngIf="controls.categoryFromControl.value === newProjectName">
       <div>
         <mat-form-field appearance="fill">
           <mat-label>Ведите название проекта</mat-label>

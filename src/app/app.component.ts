@@ -91,7 +91,7 @@ export class AppComponent {
 
     private CreateCategories() {
         this.categories = [];
-        this.categories.push(new Category(undefined, Constants.NEW_CATEGORY));
+        this.categories.push(new Category(undefined, Constants.NEW_PROJECT));
         this.projects.forEach(value => {
             this.categories.push(new Category(value.id, value.title));
         });
