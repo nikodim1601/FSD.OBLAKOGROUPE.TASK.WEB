@@ -1,10 +1,10 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, Validators} from '@angular/forms';
-import {Category} from '../Models/categories-model';
+import {Category} from '../models/categories-model';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {Constants} from '../resources/Constants';
 import {TasksService} from '../services/tasks.service';
-import {Todo} from '../Models/todo-model';
+import {Todo} from '../models/todo-model';
 import {plainToClass} from 'class-transformer';
 
 /**

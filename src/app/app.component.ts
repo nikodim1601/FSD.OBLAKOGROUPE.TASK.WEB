@@ -2,9 +2,9 @@ import {Component} from '@angular/core';
 import {CreateTaskDialogComponent} from './create-task-dialog/create-task-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
 import {TasksService} from './services/tasks.service';
-import {Project} from './Models/project-model';
-import {Todo} from './Models/todo-model';
-import {Category} from './Models/categories-model';
+import {Project} from './models/project-model';
+import {Todo} from './models/todo-model';
+import {Category} from './models/categories-model';
 import {Constants} from './resources/Constants';
 import {Subscription} from 'rxjs';
 

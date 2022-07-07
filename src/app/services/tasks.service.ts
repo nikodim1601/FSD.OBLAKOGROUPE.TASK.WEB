@@ -3,8 +3,8 @@ import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {catchError, Observable, retry, tap, throwError} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {plainToClass} from 'class-transformer';
-import {Project} from '../Models/project-model';
-import {Todo} from '../Models/todo-model';
+import {Project} from '../models/project-model';
+import {Todo} from '../models/todo-model';
 
 /**
  * Представляет сервис для работы с задачами.
