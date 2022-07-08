@@ -4,7 +4,6 @@ import {catchError, Observable, retry, tap, throwError} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {plainToClass} from 'class-transformer';
 import {Project} from '../models/project-model';
-import {Todo} from '../models/todo-model';
 
 /**
  * Представляет сервис для работы с задачами.
@@ -40,25 +39,25 @@ export class TasksService {
     /**
      * Создает новую задачу.
      */
-    createTodo(task: Todo): Observable<Todo> {
-        let result = this.http.post<Todo>(`${this.apiUrl}/todos/`, task);
+    createTodo(task: Project): Observable<Project> {
+        let result = this.http.post<Project>(`${this.apiUrl}/todos/`, task);
         return this.handleResult(result);
     }
 
     /**
      * Обновляет статус задачи.
      */
-    updateTodo(task: Todo): Observable<Todo> {
-        let result = this.http.patch<Todo>(`${this.apiUrl}/projects/${task.project_id}/todos/${task.id}`, task);
+    updateTodo(projectId: number, taskId: number, isCompleted: boolean): Observable<Project> {
+        let result = this.http.patch<Project>(`${this.apiUrl}/projects/${projectId}/todos/${taskId}`, {isCompleted: isCompleted});
         return this.handleResult(result);
     }
 
-    private handleResult(result: Observable<Todo>): Observable<Todo> {
+    private handleResult(result: Observable<Project>): Observable<Project> {
         return result.pipe(
             retry(1),
             catchError(TasksService.handleError),
             tap(value => {
-                return plainToClass(Todo, value);
+                return plainToClass(Project, value);
             })
         );
     }

@@ -3,7 +3,6 @@ import {CreateTaskDialogComponent} from './create-task-dialog/create-task-dialog
 import {MatDialog} from '@angular/material/dialog';
 import {TasksService} from './services/tasks.service';
 import {Project} from './models/project-model';
-import {Todo} from './models/todo-model';
 import {Category} from './models/categories-model';
 import {Constants} from './resources/Constants';
 import {Subscription} from 'rxjs';
@@ -80,9 +79,9 @@ export class AppComponent {
     /**
      * Обновляет список задач.
      */
-    public async onUpdateTodo(todo: Todo) {
-        todo.isCompleted = !todo.isCompleted;
-        let sub: Subscription = this.tasksService.updateTodo(todo).subscribe(
+    public async onUpdateTodo(projectId: number, taskId: number, isCompleted: boolean) {
+        isCompleted = !isCompleted;
+        let sub: Subscription = this.tasksService.updateTodo(projectId, taskId, isCompleted).subscribe(
             () => {},
             (error) => console.log(error),
             () => sub.unsubscribe()

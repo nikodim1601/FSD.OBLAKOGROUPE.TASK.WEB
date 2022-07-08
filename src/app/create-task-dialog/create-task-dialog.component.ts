@@ -4,8 +4,8 @@ import {Category} from '../models/categories-model';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {Constants} from '../resources/Constants';
 import {TasksService} from '../services/tasks.service';
-import {Todo} from '../models/todo-model';
 import {plainToClass} from 'class-transformer';
+import {Project} from '../models/project-model';
 
 /**
  * Представляет компонент создания задачи.
@@ -101,14 +101,14 @@ export class CreateTaskDialogComponent implements OnInit {
         let categoryFromControl = this.controls.categoryFromControl;
 
         if (this.controls.todoFromControl.value) {
-            let todo;
+            let project;
             if (categoryFromControl.value == Constants.NEW_PROJECT) {
                 categoryFromControl.setValue(null);
-                todo = this.getTodoWithProjectName();
+                project = this.getTodoWithProjectName();
             } else {
-                todo = this.getTodoWithProjectId();
+                project = this.getTodoWithProjectId();
             }
-            let sub = this.tasksService.createTodo(plainToClass(Todo, todo)).subscribe(
+            let sub = this.tasksService.createTodo(plainToClass(Project, project)).subscribe(
                 (response) => console.log(response),
                 (error: any) => console.log(error),
                 () => {

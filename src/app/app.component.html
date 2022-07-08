@@ -21,7 +21,7 @@
             <ng-container *ngFor="let todo of project.todos">
               <mat-checkbox color="primary"
                             checked="{{todo.isCompleted}}"
-                            (change)="onUpdateTodo(todo)"
+                            (change)="onUpdateTodo(project.id, todo.id, todo.isCompleted)"
                             class="checkbox">{{todo.text}}</mat-checkbox>
             </ng-container>
           </div>
