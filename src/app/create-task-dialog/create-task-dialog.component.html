@@ -15,7 +15,7 @@
       <mat-label>Проект</mat-label>
       <mat-select formControlName="categoryFromControl"
                   (selectionChange)="checkIsFormValid()">
-        <mat-option *ngFor="let category of categories"
+        <mat-option *ngFor="let category of categories; trackBy:trackByCategoryId"
                     (change)="checkIsFormValid()"
                     [value]="category.name">
           {{category.name}}

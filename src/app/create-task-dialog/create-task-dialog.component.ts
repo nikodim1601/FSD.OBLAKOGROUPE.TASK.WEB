@@ -110,7 +110,7 @@ export class CreateTaskDialogComponent implements OnInit {
             }
             let sub = this.tasksService.createTodo(plainToClass(Project, project)).subscribe(
                 (response) => console.log(response),
-                (error: any) => console.log(error),
+                (error: any) => console.log(error), //todo any убрать
                 () => {
                     this.closeDialog(true);
                     sub.unsubscribe();
@@ -142,6 +142,10 @@ export class CreateTaskDialogComponent implements OnInit {
             isCompleted: false,
             text: this.controls.todoFromControl.value
         }
+    }
+
+    trackByCategoryId(index: number, category: Category){
+        return category.id
     }
 
 }

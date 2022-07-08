@@ -10,7 +10,7 @@
   </mat-toolbar>
   <mat-grid-list cols="3"
                  rowHeight="2:1">
-    <ng-container *ngFor="let project of projects">
+    <ng-container *ngFor="let project of projects; trackBy: trackByProjectId">
       <mat-grid-tile>
         <mat-card class="card-container">
           <mat-card-title class="card-title">
@@ -18,7 +18,7 @@
           </mat-card-title>
           <mat-divider></mat-divider>
           <div class="card-body-container">
-            <ng-container *ngFor="let todo of project.todos">
+            <ng-container *ngFor="let todo of project.todos; trackBy: trackByTodoId">
               <mat-checkbox color="primary"
                             checked="{{todo.isCompleted}}"
                             (change)="onUpdateTodo(project.id, todo.id, todo.isCompleted)"

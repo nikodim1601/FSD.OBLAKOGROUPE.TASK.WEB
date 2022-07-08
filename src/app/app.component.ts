@@ -62,7 +62,7 @@ export class AppComponent {
         let sub: Subscription = this.tasksService.getProjects().subscribe(
             (response) => {
                 this.projects = response;
-                this.CreateCategories();
+                this.createCategories();
             },
             (error) => console.log(error),
             () => sub.unsubscribe()
@@ -82,18 +82,27 @@ export class AppComponent {
     public async onUpdateTodo(projectId: number, taskId: number, isCompleted: boolean) {
         isCompleted = !isCompleted;
         let sub: Subscription = this.tasksService.updateTodo(projectId, taskId, isCompleted).subscribe(
-            () => {},
+            () => {
+            },
             (error) => console.log(error),
             () => sub.unsubscribe()
         );
     }
 
-    private CreateCategories() {
+    private createCategories() {
         this.categories = [];
         this.categories.push(new Category(undefined, Constants.NEW_PROJECT));
         this.projects.forEach(value => {
             this.categories.push(new Category(value.id, value.title));
         });
+    }
+
+    trackByTodoId(index: number, todos: {id:number, text: string; isCompleted: boolean;}) {
+        return todos.id;
+    }
+
+    trackByProjectId(index: number, project: Project) {
+        return project.id;
     }
 
 }
