@@ -44,9 +44,14 @@ export class AppComponent {
                 categories: this.categories
             }
         });
-        let sub: Subscription = dialogRef.afterClosed().subscribe(async isNeedRefresh => {
-                if (isNeedRefresh) {
-                    await this.onGetProjects();
+        let sub: Subscription = dialogRef.afterClosed().subscribe(async project => {
+                if (project) {
+                    let index = this.projects.findIndex(proj => proj.id == project.id);
+                    if (index !== -1) {
+                        this.projects.splice(index, 1, project);
+                    } else {
+                        this.projects.push(project);
+                    }
                 }
             },
             error => console.log(error),
@@ -89,20 +94,20 @@ export class AppComponent {
         );
     }
 
+    trackByTodoId(index: number, todos: { id: number, text: string; isCompleted: boolean; }) {
+        return todos.id;
+    }
+
+    trackByProjectId(index: number, project: Project) {
+        return project.id;
+    }
+
     private createCategories() {
         this.categories = [];
         this.categories.push(new Category(undefined, Constants.NEW_PROJECT));
         this.projects.forEach(value => {
             this.categories.push(new Category(value.id, value.title));
         });
-    }
-
-    trackByTodoId(index: number, todos: {id:number, text: string; isCompleted: boolean;}) {
-        return todos.id;
-    }
-
-    trackByProjectId(index: number, project: Project) {
-        return project.id;
     }
 
 }

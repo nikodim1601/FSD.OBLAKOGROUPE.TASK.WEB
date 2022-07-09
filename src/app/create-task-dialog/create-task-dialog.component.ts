@@ -109,10 +109,9 @@ export class CreateTaskDialogComponent implements OnInit {
                 project = this.getTodoWithProjectId();
             }
             let sub = this.tasksService.createTodo(plainToClass(Project, project)).subscribe(
-                (response) => console.log(response),
+                (response) => this.closeDialog(response),
                 (error: any) => console.log(error), //todo any убрать
                 () => {
-                    this.closeDialog(true);
                     sub.unsubscribe();
                 },
             );
@@ -124,8 +123,12 @@ export class CreateTaskDialogComponent implements OnInit {
     /**
      * Закрывает диалог.
      */
-    closeDialog(isNeedRefresh: boolean) {
-        this.dialogRef.close(isNeedRefresh);
+    closeDialog(project?: Project) {
+        this.dialogRef.close(project);
+    }
+
+    trackByCategoryId(index: number, category: Category) {
+        return category.id;
     }
 
     private getTodoWithProjectId() {
@@ -133,20 +136,15 @@ export class CreateTaskDialogComponent implements OnInit {
             text: this.controls.todoFromControl.value,
             isCompleted: false,
             project_id: this.categories.find(value => value.name == this.controls.categoryFromControl.value)?.id
-        }
+        };
     }
 
     private getTodoWithProjectName() {
-        return  {
+        return {
             title: this.controls.projectFormControl.value,
             isCompleted: false,
             text: this.controls.todoFromControl.value
-        }
+        };
     }
-
-    trackByCategoryId(index: number, category: Category){
-        return category.id
-    }
-
 }
 
