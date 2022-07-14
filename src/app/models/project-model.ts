@@ -1,4 +1,4 @@
-export class Project{
+export class Project {
     id!: number;
     title!: string;
     todos!: [
@@ -7,5 +7,5 @@ export class Project{
             text: string;
             isCompleted: boolean;
         }
-    ]
+    ];
 }

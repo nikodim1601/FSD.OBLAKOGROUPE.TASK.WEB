@@ -39,8 +39,8 @@ export class TasksService {
     /**
      * Создает новую задачу.
      */
-    createTodo(task: Project): Observable<Project> {
-        let result = this.http.post<Project>(`${this.apiUrl}/todos/`, task);
+    createTodo(project: Project): Observable<Project> {
+        let result = this.http.post<Project>(`${this.apiUrl}/todos/`, project);
         return this.handleResult(result);
     }
 
@@ -62,7 +62,7 @@ export class TasksService {
         );
     }
 
-    private static handleError(error: HttpErrorResponse): Observable<never> {
+    private static handleError(error: HttpErrorResponse) {
         if (error.status == 404) {
             return throwError('Error 404, resource not found.');
         }

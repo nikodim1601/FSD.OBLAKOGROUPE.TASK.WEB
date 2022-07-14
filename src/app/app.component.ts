@@ -6,6 +6,8 @@ import {Project} from './models/project-model';
 import {Category} from './models/categories-model';
 import {Constants} from './resources/Constants';
 import {Subscription} from 'rxjs';
+import {plainToClass} from 'class-transformer';
+import {HttpErrorResponse} from '@angular/common/http';
 
 /**
  * Пердставляет компоннет со списком проектов.
@@ -44,17 +46,18 @@ export class AppComponent {
                 categories: this.categories
             }
         });
-        let sub: Subscription = dialogRef.afterClosed().subscribe(async project => {
+        let sub: Subscription = dialogRef.afterClosed().subscribe(async (project: Project) => {
                 if (project) {
                     let index = this.projects.findIndex(proj => proj.id == project.id);
                     if (index !== -1) {
                         this.projects.splice(index, 1, project);
                     } else {
                         this.projects.push(project);
+                        this.categories.push(plainToClass(Category, {id: project.id, name: project.title}));
                     }
                 }
             },
-            error => console.log(error),
+            (error: HttpErrorResponse) => console.log(error),
             () => sub.unsubscribe()
         );
 
@@ -65,11 +68,11 @@ export class AppComponent {
      */
     async onGetProjects() {
         let sub: Subscription = this.tasksService.getProjects().subscribe(
-            (response) => {
+            (response: Project[]) => {
                 this.projects = response;
                 this.createCategories();
             },
-            (error) => console.log(error),
+            (error: HttpErrorResponse) => console.log(error),
             () => sub.unsubscribe()
         );
     }
@@ -89,7 +92,7 @@ export class AppComponent {
         let sub: Subscription = this.tasksService.updateTodo(projectId, taskId, isCompleted).subscribe(
             () => {
             },
-            (error) => console.log(error),
+            (error: HttpErrorResponse) => console.log(error),
             () => sub.unsubscribe()
         );
     }
@@ -104,9 +107,9 @@ export class AppComponent {
 
     private createCategories() {
         this.categories = [];
-        this.categories.push(new Category(undefined, Constants.NEW_PROJECT));
+        this.categories.push(plainToClass(Category, {id: null, name: Constants.NEW_PROJECT}));
         this.projects.forEach(value => {
-            this.categories.push(new Category(value.id, value.title));
+            this.categories.push(plainToClass(Category, {id: value.id, name: value.title}));
         });
     }
 

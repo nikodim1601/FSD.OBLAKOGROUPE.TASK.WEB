@@ -6,6 +6,7 @@ import {Constants} from '../resources/Constants';
 import {TasksService} from '../services/tasks.service';
 import {plainToClass} from 'class-transformer';
 import {Project} from '../models/project-model';
+import {HttpErrorResponse} from '@angular/common/http';
 
 /**
  * Представляет компонент создания задачи.
@@ -24,16 +25,16 @@ export class CreateTaskDialogComponent implements OnInit {
     /**
      * Возвращает группу formControl'ов.
      */
-    readonly createFromGroup = this.formBuild.group({
-        todoFromControl: ['', [Validators.required, Validators.maxLength(300)]],
-        categoryFromControl: ['', [Validators.required]],
+    readonly createFormGroup = this.formBuild.group({
+        todoFormControl: ['', [Validators.required, Validators.maxLength(300)]],
+        categoryFormControl: ['', [Validators.required]],
         projectFormControl: ['', [Validators.required, Validators.maxLength(100)]],
     });
 
     /**
      * Возвращает formControl'ы.
      */
-    readonly controls = this.createFromGroup.controls;
+    readonly controls = this.createFormGroup.controls;
 
     /**
      * Является ли форма валидной.
@@ -49,8 +50,8 @@ export class CreateTaskDialogComponent implements OnInit {
      * Проверяет является ли форма валидной.
      */
     checkIsFormValid() {
-        if (this.controls.todoFromControl.valid && this.controls.categoryFromControl.valid) {
-            if (this.controls.categoryFromControl.value == Constants.NEW_PROJECT) {
+        if (this.controls.todoFormControl.valid && this.controls.categoryFormControl.valid) {
+            if (this.controls.categoryFormControl.value == Constants.NEW_PROJECT) {
                 this.isValidForm = !this.controls.projectFormControl.valid;
             } else {
                 this.isValidForm = false;
@@ -98,9 +99,9 @@ export class CreateTaskDialogComponent implements OnInit {
      * Создает задачу.
      */
     async onCreateTodo() {
-        let categoryFromControl = this.controls.categoryFromControl;
+        let categoryFromControl = this.controls.categoryFormControl;
 
-        if (this.controls.todoFromControl.value) {
+        if (this.controls.todoFormControl.value) {
             let project;
             if (categoryFromControl.value == Constants.NEW_PROJECT) {
                 categoryFromControl.setValue(null);
@@ -109,8 +110,8 @@ export class CreateTaskDialogComponent implements OnInit {
                 project = this.getTodoWithProjectId();
             }
             let sub = this.tasksService.createTodo(plainToClass(Project, project)).subscribe(
-                (response) => this.closeDialog(response),
-                (error: any) => console.log(error), //todo any убрать
+                (response: Project) => this.closeDialog(response),
+                (error: HttpErrorResponse) => console.log(error),
                 () => {
                     sub.unsubscribe();
                 },
@@ -133,9 +134,9 @@ export class CreateTaskDialogComponent implements OnInit {
 
     private getTodoWithProjectId() {
         return {
-            text: this.controls.todoFromControl.value,
+            text: this.controls.todoFormControl.value,
             isCompleted: false,
-            project_id: this.categories.find(value => value.name == this.controls.categoryFromControl.value)?.id
+            project_id: this.categories.find(value => value.name == this.controls.categoryFormControl.value)?.id
         };
     }
 
@@ -143,7 +144,7 @@ export class CreateTaskDialogComponent implements OnInit {
         return {
             title: this.controls.projectFormControl.value,
             isCompleted: false,
-            text: this.controls.todoFromControl.value
+            text: this.controls.todoFormControl.value
         };
     }
 }
