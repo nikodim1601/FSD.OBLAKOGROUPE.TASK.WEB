@@ -5,7 +5,7 @@
       <mat-label>Ведите название задачи</mat-label>
       <input matInput
              placeholder="Не больше 100 символов"
-             formControlName="todoFromControl"
+             formControlName="todoFormControl"
              (input)="checkIsFormValid()"
              required>
       <mat-error *ngIf="controls.todoFormControl.invalid">{{GetErrorMessage(controls.todoFormControl)}}</mat-error>
@@ -13,7 +13,7 @@
     <br>
     <mat-form-field appearance="fill">
       <mat-label>Проект</mat-label>
-      <mat-select formControlName="categoryFromControl"
+      <mat-select formControlName="categoryFormControl"
                   (selectionChange)="checkIsFormValid()">
         <mat-option *ngFor="let category of categories; trackBy:trackByCategoryId"
                     (change)="checkIsFormValid()"
@@ -44,7 +44,7 @@
           (click)="closeDialog()">ОТМЕНА
   </button>
   <button mat-flat-button color="primary"
-          [disabled]="isValidForm"
+          [disabled]="isInvalidForm"
           (click)="onCreateTodo()">ОК
   </button>
 </div>

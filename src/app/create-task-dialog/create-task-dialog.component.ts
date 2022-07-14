@@ -39,7 +39,7 @@ export class CreateTaskDialogComponent implements OnInit {
     /**
      * Является ли форма валидной.
      */
-    isValidForm: boolean = true;
+    isInvalidForm: boolean = true;
 
     /**
      * Возвращает или устанавливает категории.
@@ -52,12 +52,12 @@ export class CreateTaskDialogComponent implements OnInit {
     checkIsFormValid() {
         if (this.controls.todoFormControl.valid && this.controls.categoryFormControl.valid) {
             if (this.controls.categoryFormControl.value == Constants.NEW_PROJECT) {
-                this.isValidForm = !this.controls.projectFormControl.valid;
+                this.isInvalidForm = !this.controls.projectFormControl.valid;
             } else {
-                this.isValidForm = false;
+                this.isInvalidForm = false;
             }
         } else {
-            this.isValidForm = true;
+            this.isInvalidForm = true;
         }
     }
 
